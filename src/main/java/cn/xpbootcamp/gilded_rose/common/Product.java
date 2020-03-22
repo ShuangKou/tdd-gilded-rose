@@ -1,23 +1,32 @@
 package cn.xpbootcamp.gilded_rose.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * @author shuang.kou
  */
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@Getter
 public class Product {
     private String name;
     private Integer sellIn;
     private Integer quality;
 
-    public void updateQuality() {
+    public Product(String name, Integer sellIn, Integer quality) {
+        this.name = name;
+        this.sellIn = sellIn;
+        this.quality = quality;
+    }
+
+    public void updateProductQualitySellIn() {
+        updateSellIn();
+        updateQuality();
+    }
+
+    private void updateSellIn() {
+        if (!ProductType.SULFURAS.equals(this.getProductType())) {
+            sellIn--;
+        }
+    }
+
+    private void updateQuality() {
         int commonQualityChangeStep = 1;
         int backstagePassQualityChangeStep1 = 2;
         int backstagePassQualityChangeStep2 = 3;
@@ -57,8 +66,28 @@ public class Product {
         }
     }
 
-
     protected ProductType getProductType() {
         return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getSellIn() {
+        return sellIn;
+    }
+
+    public Integer getQuality() {
+        return quality;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", sellIn=" + sellIn +
+                ", quality=" + quality +
+                '}';
     }
 }
