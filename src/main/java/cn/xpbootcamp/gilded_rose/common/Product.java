@@ -9,20 +9,24 @@ public class Product {
     private Integer sellIn;
     private Integer quality;
 
+    public Product(Integer sellIn, Integer quality) {
+        this("普通商品", sellIn, quality);
+    }
+
     public Product(String name, Integer sellIn, Integer quality) {
         this.name = name;
         this.sellIn = sellIn;
         this.quality = quality;
     }
 
-    public void updateProductQualitySellIn() {
+    public void updateProductQualityAndSellIn() {
         updateSellIn();
         updateQuality();
     }
 
     private void updateSellIn() {
         if (!ProductType.SULFURAS.equals(this.getProductType())) {
-            sellIn--;
+            this.sellIn--;
         }
     }
 
@@ -30,44 +34,49 @@ public class Product {
         int commonQualityChangeStep = 1;
         int backstagePassQualityChangeStep1 = 2;
         int backstagePassQualityChangeStep2 = 3;
-        if (ProductType.AGED_BRIE.equals(this.getProductType())) {
-            if (sellIn > 0) {
-                plusQuality(commonQualityChangeStep);
-            } else {
+        if (ProductType.NORMAL.equals(this.getProductType())) {
+            if (this.sellIn < 0) {
                 reduceQuality(commonQualityChangeStep * 2);
             }
         }
-
-        if (ProductType.SULFURAS.equals(this.getProductType())) {
+        if (ProductType.AGED_BRIE.equals(this.getProductType())) {
             plusQuality(commonQualityChangeStep);
         }
+
+        if (ProductType.SULFURAS.equals(this.getProductType())) {
+            return;
+        }
         if (ProductType.BACKSTAGE_PASS.equals(this.getProductType())) {
-            if (sellIn < 11) {
-                plusQuality(backstagePassQualityChangeStep1);
-            }
-            if (sellIn < 6) {
-                plusQuality(backstagePassQualityChangeStep2);
-            }
-            if (sellIn <= 0) {
+            if (sellIn < 0) {
                 this.quality = 0;
+                return;
+            }
+            if (sellIn + 1 < 6) {
+                plusQuality(backstagePassQualityChangeStep2);
+                return;
+            }
+            if (sellIn + 1 < 11) {
+                plusQuality(backstagePassQualityChangeStep1);
             }
         }
     }
 
     private void reduceQuality(int num) {
-        if (this.quality > 0) {
-            this.quality += num;
+        this.quality -= num;
+        if (this.quality < 0) {
+            this.quality = 0;
         }
     }
 
     private void plusQuality(int num) {
-        if (this.quality < 49) {
-            this.quality += num;
+        this.quality += num;
+        if (this.quality > 49) {
+            this.quality = 50;
         }
     }
 
     protected ProductType getProductType() {
-        return null;
+        return ProductType.NORMAL;
     }
 
     public String getName() {

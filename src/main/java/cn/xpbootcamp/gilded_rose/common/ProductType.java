@@ -5,6 +5,7 @@ package cn.xpbootcamp.gilded_rose.common;
  */
 
 public enum ProductType {
+    NORMAL,
     AGED_BRIE,
     BACKSTAGE_PASS,
     SULFURAS

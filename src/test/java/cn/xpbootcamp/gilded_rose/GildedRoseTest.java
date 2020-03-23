@@ -12,23 +12,29 @@ class GildedRoseTest {
 
     @Test
     void should_update_quality_success() {
+        Product product = new Product(6, 6);
         AgedBrie agedBrie = new AgedBrie(9, 9);
-        BackstagePass backstagePass = new BackstagePass(9, 9);
-        Sulfuras sulfuras = new Sulfuras(9, 9);
-        List<Product> products = Arrays.asList(agedBrie, backstagePass, sulfuras);
+        Sulfuras sulfuras = new Sulfuras(11, 9);
+        BackstagePass backstagePass = new BackstagePass(10, 9);
+        List<Product> products = Arrays.asList(product, agedBrie, backstagePass, sulfuras);
         GildedRose gildedRose = new GildedRose(products);
         // 9 天过去了
         for (int i = 0; i < 9; i++) {
             gildedRose.updateAllProductQualitySellIn();
         }
 
+        assertEquals(-3, product.getSellIn().intValue());
+        assertEquals(0, product.getQuality().intValue());
+
+
         assertEquals(0, agedBrie.getSellIn().intValue());
-        assertEquals(19, agedBrie.getQuality().intValue());
+        assertEquals(18, agedBrie.getQuality().intValue());
 
-        assertEquals(0, backstagePass.getSellIn().intValue());
-        assertEquals(0, backstagePass.getQuality().intValue());
 
-        assertEquals(9, sulfuras.getSellIn().intValue());
-        assertEquals(18, sulfuras.getQuality().intValue());
+        assertEquals(11, sulfuras.getSellIn().intValue());
+        assertEquals(9, sulfuras.getQuality().intValue());
+
+        assertEquals(1, backstagePass.getSellIn().intValue());
+        assertEquals(31, backstagePass.getQuality().intValue());
     }
 }

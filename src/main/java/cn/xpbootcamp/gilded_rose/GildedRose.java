@@ -15,6 +15,6 @@ public class GildedRose {
     }
 
     public void updateAllProductQualitySellIn() {
-        products.forEach(Product::updateProductQualitySellIn);
+        products.forEach(Product::updateProductQualityAndSellIn);
     }
 }
